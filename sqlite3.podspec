@@ -13,7 +13,7 @@ LICENSE
   s.authors  = { 'Clemens Gruber' => 'clemensgru@gmail.com' }
 
   v = s.version.to_s.split('.')
-  archive_name = "sqlite-src-"+v[0]+v[1].rjust(2, '0')+v[2].rjust(2, '0')+"00"
+  archive_name = "sqlite-src-3450100"
   s.source   = { :http => "https://www.sqlite.org/2024/sqlite-src-3450100.zip" }
   s.prepare_command = <<-CMD
 cd #{archive_name}
