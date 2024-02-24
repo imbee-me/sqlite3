@@ -15,12 +15,15 @@ LICENSE
   v = s.version.to_s.split('.')
   archive_name = "sqlite-src-"+v[0]+v[1].rjust(2, '0')+v[2].rjust(2, '0')+"00"
   s.source   = { :http => "https://www.sqlite.org/#{Time.now.year}/#{archive_name}.zip" }
-  s.prepare_command = <<-CMD
-cd #{archive_name}
-./configure
-make sqlite3.c sqlite3.h sqlite3ext.h
-CMD
+  
   s.requires_arc = false
+
+    # Setting a deployment_target enables linting of podspecs which depend on sqlite3
+  # Absolute minimum value for a given version of Xcode can be found at https://developer.apple.com/support/xcode/
+  s.ios.deployment_target = '12.0'
+  s.tvos.deployment_target = '12.0'
+  s.macos.deployment_target = '10.13'
+  s.watchos.deployment_target = '4.0'
 
   s.default_subspecs = 'common'
 
