@@ -12,17 +12,18 @@ LICENSE
   s.homepage = 'https://github.com/clemensg/sqlite3pod'
   s.authors  = { 'Clemens Gruber' => 'clemensgru@gmail.com' }
 
-  # Sobrescribiendo valores variables por fijos
-  archive_name = "sqlite-autoconf-3450100"
-  s.source   = { :http => "https://www.sqlite.org/2023/sqlite-autoconf-3450100.tar.gz" }
+  v = s.version.to_s.split('.')
+  archive_name = "sqlite-src-"+v[0]+v[1].rjust(2, '0')+v[2].rjust(2, '0')+"00"
+  s.source   = { :http => "https://www.sqlite.org/2024/sqlite-src-3450100.zip" }
   s.prepare_command = <<-CMD
-tar xvfz sqlite-autoconf-3450100.tar.gz
-cd sqlite-autoconf-3450100
+cd #{archive_name}
 ./configure
 make sqlite3.c sqlite3.h sqlite3ext.h
 CMD
   s.requires_arc = false
 
+    # Setting a deployment_target enables linting of podspecs which depend on sqlite3
+  # Absolute minimum value for a given version of Xcode can be found at https://developer.apple.com/support/xcode/
   s.ios.deployment_target = '12.0'
   s.tvos.deployment_target = '12.0'
   s.macos.deployment_target = '10.13'
@@ -31,10 +32,10 @@ CMD
   s.default_subspecs = 'common'
 
   s.subspec 'common' do |ss|
-    ss.source_files = "sqlite-autoconf-3450100/sqlite*.{h,c}"
-    ss.public_header_files = "sqlite-autoconf-3450100/sqlite3.h,sqlite-autoconf-3450100/sqlite3ext.h"
+    ss.source_files = "#{archive_name}/sqlite*.{h,c}"
+    ss.public_header_files = "#{archive_name}/sqlite3.h,#{archive_name}/sqlite3ext.h"
     ss.osx.pod_target_xcconfig = { 'OTHER_CFLAGS' => '$(inherited) -DHAVE_USLEEP=1' }
-    # Configuraciones específicas para iOS, tvOS, watchOS
+    # Disable OS X / AFP locking code on mobile platforms (iOS, tvOS, watchOS)
     sqlite_xcconfig_ios = { 'OTHER_CFLAGS' => '$(inherited) -DHAVE_USLEEP=1 -DSQLITE_ENABLE_LOCKING_STYLE=0' }
     ss.ios.pod_target_xcconfig = sqlite_xcconfig_ios
     ss.tvos.pod_target_xcconfig = sqlite_xcconfig_ios
