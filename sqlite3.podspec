@@ -25,9 +25,6 @@ CMD
   # Setting a deployment_target enables linting of podspecs which depend on sqlite3
   # Absolute minimum value for a given version of Xcode can be found at https://developer.apple.com/support/xcode/
   s.ios.deployment_target = '12.0'
-  s.tvos.deployment_target = '12.0'
-  s.macos.deployment_target = '10.13'
-  s.watchos.deployment_target = '4.0'
 
   s.default_subspecs = 'common'
 
